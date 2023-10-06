@@ -18,11 +18,13 @@ class TaskController extends Controller
     public function index(Request $request, Task $task): JsonResponse
     {
         $status = $request->get('status');
+        $isTrashed = (int) $request->get('is_trashed', 0);
         $tasks = Auth::user()
             ->tasks()
             ->when(!empty($status), function($query) use ($status) {
                 $query->where('status', $status);
             })
+            ->where('is_trashed', $isTrashed)
             ->get()
             ->toArray();
 
@@ -60,8 +62,15 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        //
+        if (Auth::id() !== $task?->user_id) {
+            return $this->errorResponse('Unauthorized', [], 403);
+        }
+
+        $task->is_trashed = true;
+        $task->save();
+
+        return $this->successResponse($task->refresh()->toArray());
     }
 }

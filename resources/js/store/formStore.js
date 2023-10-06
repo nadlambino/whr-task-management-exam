@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 export const useFormStore = defineStore('formStore', () => {
     const isOpen = ref(false)
-    const formType = ref('create') // create or update
+    const formType = ref('create') // create or update or delete
     const id = ref();
     const title = ref("");
     const description = ref("");
@@ -14,7 +14,7 @@ export const useFormStore = defineStore('formStore', () => {
         isOpen.value = value
         formType.value = type
 
-        if (type === 'update' && data) {
+        if ((type === 'update' || type === 'delete') && data) {
             id.value = data.id
             title.value = data.title
             description.value = data.description
@@ -65,13 +65,29 @@ export const useFormStore = defineStore('formStore', () => {
         }
     })
 
+    const {
+        mutate: deleteTask,
+        isSuccess: isTaskDeleted,
+        isLoading: isTaskDeleting,
+        isError: isDeleteError
+    } = useMutation({
+        mutationFn: async () => {
+            return await window.axios.delete(`/api/tasks/${id.value}`).then(() => {
+                handleFormState(false);
+                queryClient.invalidateQueries({ queryKey: ['tasks'] })
+            })
+        }
+    })
+
     const isFormSubmitting = computed(() => isTaskCreating.value || isTaskUpdating.value)
 
     function handleFormSubmit() {
         if (formType.value === 'create') {
             createNewTask();
-        } else {
+        } else if (formType.value === 'update') {
             updateTask();
+        } else {
+            deleteTask();
         }
     }
 

@@ -16,8 +16,12 @@ watch(status, handleChangeStatus)
 function handleChangeStatus() {
     formStore?.handleFormState(false, 'update', {
         ...task?.value,
-        status: status.value
     });
+    formStore?.handleFormSubmit();
+}
+
+function handleDelete() {
+    formStore?.handleFormState(false, 'delete', task.value);
     formStore?.handleFormSubmit();
 }
 </script>
@@ -41,7 +45,7 @@ function handleChangeStatus() {
         </div>
         <ul>
             <li><button @click="formStore.handleFormState(true, 'update', task)">Edit</button></li>
-            <li><button>Delete</button></li>
+            <li><button @click="handleDelete">Delete</button></li>
         </ul>
     </div>
 </template>
