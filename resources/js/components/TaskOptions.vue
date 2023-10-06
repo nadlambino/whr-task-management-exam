@@ -16,6 +16,7 @@ watch(status, handleChangeStatus)
 function handleChangeStatus() {
     formStore?.handleFormState(false, 'update', {
         ...task?.value,
+        status: status.value
     });
     formStore?.handleFormSubmit();
 }
