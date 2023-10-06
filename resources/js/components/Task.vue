@@ -1,5 +1,7 @@
 <script setup>
-import {toRefs} from "vue";
+import {ref, toRefs} from "vue";
+import TaskOptions from "./TaskOptions.vue";
+import { onClickOutside } from '@vueuse/core'
 
 const props = defineProps({
     task: {
@@ -9,13 +11,23 @@ const props = defineProps({
 })
 
 const { task } = toRefs(props);
+const isOptionsOpen = ref(false)
+
+function handleOptionsToggle() {
+    isOptionsOpen.value = !isOptionsOpen.value
+}
+
+const containerRef = ref()
+onClickOutside(containerRef, handleOptionsToggle)
+
 </script>
 
 <template>
     <div class="task" :class="task.status">
         <div class="task-header">
             <h2 class="title">{{ task.title }}</h2>
-            <button class="options-btn">⋮</button>
+            <button class="options-btn" @click="handleOptionsToggle">⋮</button>
+            <TaskOptions v-if="isOptionsOpen" ref="containerRef" />
         </div>
         <p class="description">{{ task.description }}</p>
         <div class="info">
@@ -51,7 +63,7 @@ const { task } = toRefs(props);
     }
 
     .task-header {
-        @apply flex gap-5 justify-between items-center;
+        @apply flex gap-5 justify-between items-center relative;
 
         .title {
             @apply font-bold text-lg truncate;

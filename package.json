@@ -21,6 +21,7 @@
     "dependencies": {
         "@tanstack/vue-query": "^4.35.7",
         "@vitejs/plugin-vue": "^4.4.0",
+        "@vueuse/core": "^10.4.1",
         "pinia": "^2.1.6",
         "vue": "^3.2.36",
         "vue-loader": "^17.2.2",
