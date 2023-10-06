@@ -1,8 +1,10 @@
 <script setup>
 import {useTrashStore} from "../store/trashStore.js";
-import { useQuery } from '@tanstack/vue-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/vue-query';
 import {computed} from "vue";
 
+const trashStore = useTrashStore()
+const queryClient = useQueryClient()
 const { data, isLoading } = useQuery({
     queryKey: ['trashed'],
     queryFn: async () => {
@@ -11,7 +13,14 @@ const { data, isLoading } = useQuery({
 })
 const tasks = computed(() => data.value?.data?.data ?? [])
 
-const trashStore = useTrashStore()
+const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
+    mutationFn: async (id) => {
+        await window.axios.put(`/api/tasks/restore/${id}`).then(() => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] })
+            queryClient.invalidateQueries({ queryKey: ['trashed'] })
+        })
+    }
+})
 </script>
 
 <template>
@@ -31,18 +40,24 @@ const trashStore = useTrashStore()
                     <v-table>
                         <thead>
                             <tr>
-                                <th>
+                                <th class="text-center">
                                     Title
                                 </th>
-                                <th>
+                                <th class="text-center">
                                     Status
                                 </th>
-                                <th>
+                                <th class="text-center">
                                     Action
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
+                            <tr v-if="isLoading">
+                                <td colspan="3">Retrieving trashed tasks</td>
+                            </tr>
+                            <tr v-else-if="!isLoading && tasks.length === 0">
+                                <td colspan="3">Trash bin is empty</td>
+                            </tr>
                             <tr
                                 v-for="task in tasks"
                                 :key="task.id"
@@ -50,7 +65,12 @@ const trashStore = useTrashStore()
                                 <td>{{ task.title }}</td>
                                 <td>{{ task.status }}</td>
                                 <td>
-                                    <v-btn variant="tonal" class="button main-button">
+                                    <v-btn
+                                        variant="tonal"
+                                        class="button main-button"
+                                        @click="restoreTrashed(task.id)"
+                                        :disabled="isRestoring || isLoading"
+                                    >
                                         <v-icon icon="mdi-restore mr-2" />
                                         Restore
                                     </v-btn>
@@ -75,4 +95,8 @@ const trashStore = useTrashStore()
 
 <style scoped lang="scss">
 @import "./../../css/app.css";
+
+:deep(table) {
+    @apply text-center;
+}
 </style>

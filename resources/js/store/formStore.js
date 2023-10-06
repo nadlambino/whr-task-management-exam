@@ -75,6 +75,7 @@ export const useFormStore = defineStore('formStore', () => {
             return await window.axios.delete(`/api/tasks/${id.value}`).then(() => {
                 handleFormState(false);
                 queryClient.invalidateQueries({ queryKey: ['tasks'] })
+                queryClient.invalidateQueries({ queryKey: ['trashed'] })
             })
         }
     })

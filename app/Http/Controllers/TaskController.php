@@ -59,6 +59,18 @@ class TaskController extends Controller
         return $this->successResponse($task->refresh()->toArray());
     }
 
+    public function restore(Task $task): JsonResponse
+    {
+        if (Auth::id() !== $task?->user_id) {
+            return $this->errorResponse('Unauthorized', [], 403);
+        }
+
+        $task->is_trashed = false;
+        $task->save();
+
+        return $this->successResponse($task->refresh()->toArray());
+    }
+
     /**
      * Remove the specified resource from storage.
      */
