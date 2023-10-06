@@ -26,7 +26,11 @@ onClickOutside(containerRef, handleOptionsToggle)
     <div class="task" :class="task.status">
         <div class="task-header">
             <h2 class="title">{{ task.title }}</h2>
-            <button class="options-btn" @click="handleOptionsToggle">⋮</button>
+            <v-btn
+                icon="mdi-dots-vertical"
+                variant="tonal"
+                class="options-btn"
+                @click="handleOptionsToggle" />
             <TaskOptions v-if="isOptionsOpen" ref="containerRef" />
         </div>
         <p class="description">{{ task.description }}</p>
@@ -70,7 +74,7 @@ onClickOutside(containerRef, handleOptionsToggle)
         }
 
         .options-btn {
-            @apply font-bold
+            @apply font-bold w-8 h-8
         }
     }
 

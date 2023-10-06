@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/vue-query';
 import {computed} from "vue";
 
 const { data, isLoading } = useQuery({
-    queryKey: ['tasks', 'todo'],
+    queryKey: ['tasks'],
     queryFn: async () => {
         return await Promise.all([
             await window.axios.get('/api/tasks?status=todo'),

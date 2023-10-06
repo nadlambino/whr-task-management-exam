@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import {computed, ref, watch} from 'vue'
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 export const useFormStore = defineStore('formStore', () => {
     const isOpen = ref(false)
@@ -14,6 +14,8 @@ export const useFormStore = defineStore('formStore', () => {
     const title = ref("");
     const description = ref("");
     const status = ref('todo');
+
+    const queryClient = useQueryClient()
 
     const {
         mutate: createNewTask,
@@ -36,6 +38,7 @@ export const useFormStore = defineStore('formStore', () => {
         description.value = '';
         status.value = 'todo';
         handleFormState(false);
+        queryClient.invalidateQueries({ queryKey: ['tasks'] })
     })
 
     function handleFormSubmit() {

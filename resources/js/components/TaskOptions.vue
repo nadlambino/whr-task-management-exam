@@ -48,7 +48,7 @@ function handleChangeStatus(item) {
 @import "./../../css/app.css";
 
 .options-container {
-    @apply border border-slate-300 rounded-md py-3 absolute bg-white shadow-md right-4 top-0 w-52;
+    @apply border border-slate-300 rounded-md py-3 absolute bg-white shadow-md right-0 top-0 w-52;
 
     .move-to-item {
         @apply flex justify-between p-2 pt-0 w-full text-xs;
