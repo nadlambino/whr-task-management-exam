@@ -1,7 +1,9 @@
 <script setup>
-
+import TaskForm from "./components/TaskForm.vue";
+import TaskMenu from "./components/TaskMenu.vue";
 </script>
 
 <template>
-    <h1 class="text-red-400">Hello World</h1>
+    <TaskMenu />
+    <TaskForm />
 </template>
