@@ -11,6 +11,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { createPinia } from 'pinia'
+import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const vuetify = createVuetify({
     components,
@@ -21,6 +22,7 @@ const app = createApp({});
 
 app.use(pinia);
 app.use(vuetify);
+app.use(VueQueryPlugin)
 
 import App from './App.vue';
 

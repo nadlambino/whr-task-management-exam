@@ -1,5 +1,4 @@
 <script setup>
-import {ref, watchEffect} from "vue";
 import { useFormStore } from "../store/formStore.js";
 
 const formStore = useFormStore()
@@ -61,7 +60,7 @@ const formStore = useFormStore()
                     <v-btn
                         class="button main-button"
                         variant="tonal"
-                        @click="formStore.handleFormState(false)"
+                        @click="formStore.handleFormSubmit"
                     >
                         Save
                     </v-btn>

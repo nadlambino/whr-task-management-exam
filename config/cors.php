@@ -20,7 +20,6 @@ return [
         'sanctum/csrf-cookie',
         '/login',
         '/logout',
-        '/sanctum/csrf-cookie'
     ],
 
     'allowed_methods' => ['*'],
