@@ -17,7 +17,7 @@ const formStore = useFormStore()
                     {{ formStore.formType }} Task
                 </span>
             </v-card-title>
-            <form>
+            <form @submit.prevent="formStore.handleFormSubmit">
                 <v-card-text>
                     <v-text-field
                         label="Title"
@@ -59,9 +59,9 @@ const formStore = useFormStore()
                         Cancel
                     </v-btn>
                     <v-btn
+                        type="submit"
                         class="button main-button"
                         variant="tonal"
-                        @click="formStore.handleFormSubmit"
                         :disabled="formStore.isFormSubmitting"
                     >
                         Save

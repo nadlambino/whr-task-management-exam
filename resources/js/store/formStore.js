@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {computed, ref, watch} from 'vue'
+import {computed, ref} from 'vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 export const useFormStore = defineStore('formStore', () => {
@@ -28,18 +28,16 @@ export const useFormStore = defineStore('formStore', () => {
                 title: title.value,
                 description: description.value,
                 status: status.value
+            }).then(() => {
+                title.value = '';
+                description.value = '';
+                status.value = 'todo';
+                handleFormState(false);
+                queryClient.invalidateQueries({ queryKey: ['tasks'] })
             })
         }
     })
     const isFormSubmitting = computed(() => isTaskCreating.value)
-
-    watch(isTaskCreated, () => {
-        title.value = '';
-        description.value = '';
-        status.value = 'todo';
-        handleFormState(false);
-        queryClient.invalidateQueries({ queryKey: ['tasks'] })
-    })
 
     function handleFormSubmit() {
         if (formType.value === 'create') {
