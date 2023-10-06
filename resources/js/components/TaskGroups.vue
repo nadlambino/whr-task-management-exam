@@ -1,12 +1,34 @@
 <script setup>
 import TaskList from "./TaskList.vue";
+import { useQuery } from '@tanstack/vue-query';
+import {computed} from "vue";
+
+const { data } = useQuery({
+    queryKey: ['tasks', 'todo'],
+    queryFn: async () => {
+        return await Promise.all([
+            await window.axios.get('/api/tasks?status=todo'),
+            await window.axios.get('/api/tasks?status=inprogress'),
+            await window.axios.get('/api/tasks?status=completed'),
+        ]);
+    }
+})
+const todos = computed(() => {
+    return data?.value && data.value[0] ? data.value[0].data.data : []
+})
+const inProgress = computed(() => {
+    return data?.value && data.value[1] ? data.value[1].data.data : []
+})
+const completed = computed(() => {
+    return data?.value && data.value[2] ? data.value[2].data.data : []
+})
 </script>
 
 <template>
     <div class="task-groups">
-        <TaskList class="task-list-container" status="TODO" :tasks="[]" />
-        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="[]" />
-        <TaskList class="task-list-container" status="COMPLETED" :tasks="[]" />
+        <TaskList class="task-list-container" status="TODO" :tasks="todos" />
+        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="inProgress" />
+        <TaskList class="task-list-container" status="COMPLETED" :tasks="completed" />
     </div>
 </template>
 

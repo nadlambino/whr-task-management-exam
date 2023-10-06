@@ -12,11 +12,20 @@ use Illuminate\Support\Facades\Auth;
 class TaskController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get list of the resource.
      */
-    public function index()
+    public function index(Request $request, Task $task): JsonResponse
     {
-        //
+        $status = $request->get('status');
+        $tasks = Auth::user()
+            ->tasks()
+            ->when(!empty($status), function($query) use ($status) {
+                $query->where('status', $status);
+            })
+            ->get()
+            ->toArray();
+
+        return $this->successResponse($tasks);
     }
 
     /**

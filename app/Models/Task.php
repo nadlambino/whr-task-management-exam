@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Task extends Model
 {
@@ -13,8 +15,30 @@ class Task extends Model
 
     protected $fillable = ['title', 'description', 'status', 'is_trashed'];
 
+    protected $casts = [
+        'created_at' => 'datetime:M d Y h:i A'
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value, 'UTC')
+                ->setTimezone('Asia/Singapore')
+                ->format('M d Y h:i A'),
+        );
+    }
+
+    public function updatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => Carbon::parse($value, 'UTC')
+                ->setTimezone('Asia/Singapore')
+                ->format('M d Y h:i A'),
+        );
     }
 }

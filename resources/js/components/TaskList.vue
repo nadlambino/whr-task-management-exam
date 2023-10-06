@@ -1,5 +1,6 @@
 <script setup>
 import {toRefs} from "vue";
+import Task from "./Task.vue";
 
 const props = defineProps({
     status: {
@@ -18,6 +19,9 @@ const { status, tasks } = toRefs(props);
 <template>
     <div class="task-list">
         <h3 class="list-label">{{ status }}</h3>
+        <div class="tasks-container">
+            <Task v-for="task in tasks" :key="task.id" :task="task" />
+        </div>
     </div>
 </template>
 
@@ -26,9 +30,14 @@ const { status, tasks } = toRefs(props);
 
 .task-list {
     @apply flex flex-col gap-3 w-full;
+    @apply md:w-1/3;
 
     .list-label {
         @apply uppercase text-center text-base font-bold tracking-widest;
+    }
+
+    .tasks-container {
+        @apply p-3 flex flex-col gap-5
     }
 }
 </style>
