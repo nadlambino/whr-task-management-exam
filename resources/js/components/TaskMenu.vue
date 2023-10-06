@@ -1,11 +1,13 @@
 <script setup>
 import {useFormStore} from "../store/formStore.js";
+import TaskForm from "./TaskForm.vue";
 
 const formStore = useFormStore()
 </script>
 
 <template>
-    <nav class="task-menu">
+    <TaskForm />
+    <div class="task-menu">
         <v-btn
             class="button main-button"
             variant="tonal"
@@ -14,9 +16,13 @@ const formStore = useFormStore()
         >
             New Task
         </v-btn>
-    </nav>
+    </div>
 </template>
 
 <style scoped lang="scss">
 @import "./../../css/app.css";
+
+.task-menu {
+
+}
 </style>
