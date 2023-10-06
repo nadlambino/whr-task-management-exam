@@ -6,12 +6,14 @@ const formStore = useFormStore()
 
 <template>
     <nav class="task-menu">
-        <button
-            class="btn btn-primary"
+        <v-btn
+            class="button main-button"
+            variant="tonal"
             @click="formStore.handleFormState(true, 'create')"
-            :disabled="formStore.isOpen">
+            :disabled="formStore.isOpen"
+        >
             New Task
-        </button>
+        </v-btn>
     </nav>
 </template>
 

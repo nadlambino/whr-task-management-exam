@@ -10,9 +10,16 @@ export const useFormStore = defineStore('formStore', () => {
         formType.value = type
     }
 
+    const title = ref("");
+    const description = ref("");
+    const status = ref('todo');
+
     return {
         isOpen,
         formType,
-        handleFormState
+        handleFormState,
+        title,
+        description,
+        status
     }
 })
