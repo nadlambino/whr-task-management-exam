@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {ref, watch} from 'vue'
+import {computed, ref, watch} from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 
 export const useFormStore = defineStore('formStore', () => {
@@ -18,8 +18,8 @@ export const useFormStore = defineStore('formStore', () => {
     const {
         mutate: createNewTask,
         isSuccess: isTaskCreated,
-        // isLoading: isTaskCreating,
-        // isError: isCreateError
+        isLoading: isTaskCreating,
+        isError: isCreateError
     } = useMutation({
         mutationFn: async () => {
             return await window.axios.post('/api/tasks', {
@@ -29,8 +29,12 @@ export const useFormStore = defineStore('formStore', () => {
             })
         }
     })
+    const isFormSubmitting = computed(() => isTaskCreating.value)
 
     watch(isTaskCreated, () => {
+        title.value = '';
+        description.value = '';
+        status.value = 'todo';
         handleFormState(false);
     })
 
@@ -47,6 +51,7 @@ export const useFormStore = defineStore('formStore', () => {
         title,
         description,
         status,
-        handleFormSubmit
+        handleFormSubmit,
+        isFormSubmitting
     }
 })

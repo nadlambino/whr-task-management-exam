@@ -54,6 +54,7 @@ const formStore = useFormStore()
                         class="button secondary-button"
                         variant="tonal"
                         @click="formStore.handleFormState(false)"
+                        :disabled="formStore.isFormSubmitting"
                     >
                         Cancel
                     </v-btn>
@@ -61,6 +62,7 @@ const formStore = useFormStore()
                         class="button main-button"
                         variant="tonal"
                         @click="formStore.handleFormSubmit"
+                        :disabled="formStore.isFormSubmitting"
                     >
                         Save
                     </v-btn>
