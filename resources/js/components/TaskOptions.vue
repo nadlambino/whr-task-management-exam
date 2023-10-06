@@ -1,7 +1,15 @@
 <script setup>
+import {ref, toRefs} from "vue";
+import {useFormStore} from "../store/formStore.js";
 
-import {ref} from "vue";
-
+const props = defineProps({
+    task: {
+        type: Object,
+        required: true
+    }
+})
+const { task } = toRefs(props)
+const formStore = useFormStore();
 const statuses = [
     {key: 'Todo', value: 'todo'},
     {key: 'In Progress', value: 'inprogress'},
@@ -38,7 +46,7 @@ function handleChangeStatus(item) {
             </v-menu>
         </div>
         <ul>
-            <li><button>Edit</button></li>
+            <li><button @click="formStore.handleFormState(true, 'update', task)">Edit</button></li>
             <li><button>Delete</button></li>
         </ul>
     </div>

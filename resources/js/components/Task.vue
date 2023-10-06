@@ -31,7 +31,7 @@ onClickOutside(containerRef, handleOptionsToggle)
                 variant="tonal"
                 class="options-btn"
                 @click="handleOptionsToggle" />
-            <TaskOptions v-if="isOptionsOpen" ref="containerRef" />
+            <TaskOptions v-if="isOptionsOpen" ref="containerRef" :task="task" />
         </div>
         <p class="description">{{ task.description }}</p>
         <div class="info">

@@ -5,15 +5,27 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 export const useFormStore = defineStore('formStore', () => {
     const isOpen = ref(false)
     const formType = ref('create') // create or update
-
-    function handleFormState(value, type = 'create') {
-        isOpen.value = value
-        formType.value = type
-    }
-
+    const id = ref();
     const title = ref("");
     const description = ref("");
     const status = ref('todo');
+
+    function handleFormState(value, type = 'create', data = undefined) {
+        isOpen.value = value
+        formType.value = type
+
+        if (type === 'update' && data) {
+            id.value = data.id
+            title.value = data.title
+            description.value = data.description
+            status.value = data.status
+        } else if (value === false) {
+            id.value = undefined
+            title.value = ''
+            description.value = ''
+            status.value = 'todo'
+        }
+    }
 
     const queryClient = useQueryClient()
 
@@ -29,19 +41,37 @@ export const useFormStore = defineStore('formStore', () => {
                 description: description.value,
                 status: status.value
             }).then(() => {
-                title.value = '';
-                description.value = '';
-                status.value = 'todo';
                 handleFormState(false);
                 queryClient.invalidateQueries({ queryKey: ['tasks'] })
             })
         }
     })
-    const isFormSubmitting = computed(() => isTaskCreating.value)
+
+    const {
+        mutate: updateTask,
+        isSuccess: isTaskUpdated,
+        isLoading: isTaskUpdating,
+        isError: isUpdateError
+    } = useMutation({
+        mutationFn: async () => {
+            return await window.axios.put(`/api/tasks/${id.value}`, {
+                title: title.value,
+                description: description.value,
+                status: status.value
+            }).then(() => {
+                handleFormState(false);
+                queryClient.invalidateQueries({ queryKey: ['tasks'] })
+            })
+        }
+    })
+
+    const isFormSubmitting = computed(() => isTaskCreating.value || isTaskUpdating.value)
 
     function handleFormSubmit() {
         if (formType.value === 'create') {
             createNewTask();
+        } else {
+            updateTask();
         }
     }
 
@@ -49,6 +79,7 @@ export const useFormStore = defineStore('formStore', () => {
         isOpen,
         formType,
         handleFormState,
+        id,
         title,
         description,
         status,

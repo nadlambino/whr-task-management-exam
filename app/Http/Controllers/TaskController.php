@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,9 +42,19 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTaskRequest $request, Task $task): JsonResponse
     {
-        //
+        if (Auth::id() !== $task?->user_id) {
+            return $this->errorResponse('Unauthorized', [], 403);
+        }
+
+        $data = $request->validated();
+        $task->title = $data['title'];
+        $task->description = $data['description'];
+        $task->status = $data['status'] ?? 'todo';
+        $task->save();
+
+        return $this->successResponse($task->refresh()->toArray());
     }
 
     /**
