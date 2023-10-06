@@ -1,6 +1,7 @@
 <script setup>
-import {toRefs} from "vue";
+import { toRefs } from "vue";
 import Task from "./Task.vue";
+import TaskSkeleton from "./TaskSkeleton.vue";
 
 const props = defineProps({
     status: {
@@ -10,19 +11,24 @@ const props = defineProps({
     tasks: {
         type: Array,
         required: true
+    },
+    isLoading: {
+        type: Boolean,
+        required: true
     }
 })
 
-const { status, tasks } = toRefs(props);
+const { status, tasks, isLoading } = toRefs(props);
 </script>
 
 <template>
     <div class="task-list">
         <h3 class="list-label">{{ status }}</h3>
         <div class="tasks-container">
-            <div v-if="tasks.length === 0" class="empty-list">
+            <div v-if="tasks.length === 0 && !isLoading" class="empty-list">
                 <span>You do not have task here...</span>
             </div>
+            <TaskSkeleton v-else-if="isLoading" />
             <Task v-for="task in tasks" :key="task.id" :task="task" />
         </div>
     </div>

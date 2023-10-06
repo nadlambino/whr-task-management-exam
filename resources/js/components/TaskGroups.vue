@@ -3,7 +3,7 @@ import TaskList from "./TaskList.vue";
 import { useQuery } from '@tanstack/vue-query';
 import {computed} from "vue";
 
-const { data } = useQuery({
+const { data, isLoading } = useQuery({
     queryKey: ['tasks', 'todo'],
     queryFn: async () => {
         return await Promise.all([
@@ -26,9 +26,9 @@ const completed = computed(() => {
 
 <template>
     <div class="task-groups">
-        <TaskList class="task-list-container" status="TODO" :tasks="todos" />
-        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="inProgress" />
-        <TaskList class="task-list-container" status="COMPLETED" :tasks="completed" />
+        <TaskList class="task-list-container" status="TODO" :tasks="todos" :is-loading="isLoading" />
+        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="inProgress" :is-loading="isLoading" />
+        <TaskList class="task-list-container" status="COMPLETED" :tasks="completed" :is-loading="isLoading" />
     </div>
 </template>
 
