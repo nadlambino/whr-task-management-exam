@@ -9,12 +9,20 @@ const formStore = useFormStore()
     <TaskForm />
     <div class="task-menu">
         <v-btn
-            class="button main-button"
+            class="button danger-button text-xs"
+            variant="tonal"
+        >
+            <v-icon icon="mdi-delete-outline" class="mr-2"/>
+            DELETE
+        </v-btn>
+        <v-btn
+            class="button main-button text-xs"
             variant="tonal"
             @click="formStore.handleFormState(true, 'create')"
             :disabled="formStore.isOpen"
         >
-            New Task
+            <v-icon icon="mdi-plus-box-multiple-outline" class="mr-2"/>
+            NEW TASK
         </v-btn>
     </div>
 </template>
@@ -23,6 +31,6 @@ const formStore = useFormStore()
 @import "./../../css/app.css";
 
 .task-menu {
-
+    @apply flex justify-end gap-2
 }
 </style>
