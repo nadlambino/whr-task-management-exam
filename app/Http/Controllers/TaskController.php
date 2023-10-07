@@ -17,6 +17,7 @@ class TaskController extends Controller
      */
     public function index(Request $request, Task $task): JsonResponse
     {
+        $search = $request->get('search');
         $status = $request->get('status');
         $isTrashed = (int) $request->get('is_trashed', 0);
         $tasks = Auth::user()
@@ -29,6 +30,12 @@ class TaskController extends Controller
             })
             ->when(!$isTrashed, function($query) {
                 $query->whereNull('trashed_at');
+            })
+            ->when(!is_null($search), function($query) use ($search) {
+                $query->where(function($query) use ($search) {
+                    $query->where('title', 'LIKE', "%$search%")
+                        ->orWhere('description', 'LIKE', "%$search%");
+                });
             })
             ->get()
             ->toArray();

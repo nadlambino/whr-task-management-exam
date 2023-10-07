@@ -1,34 +1,15 @@
 <script setup>
 import TaskList from "./TaskList.vue";
-import { useQuery } from '@tanstack/vue-query';
-import {computed} from "vue";
+import {useTaskStore} from "../store/taskStore.js";
 
-const { data, isLoading } = useQuery({
-    queryKey: ['tasks'],
-    queryFn: async () => {
-        return await Promise.all([
-            await window.axios.get('/api/tasks?status=todo'),
-            await window.axios.get('/api/tasks?status=inprogress'),
-            await window.axios.get('/api/tasks?status=completed'),
-        ]);
-    }
-})
-const todos = computed(() => {
-    return data?.value && data.value[0] ? data.value[0].data.data : []
-})
-const inProgress = computed(() => {
-    return data?.value && data.value[1] ? data.value[1].data.data : []
-})
-const completed = computed(() => {
-    return data?.value && data.value[2] ? data.value[2].data.data : []
-})
+const taskStore = useTaskStore();
 </script>
 
 <template>
     <div class="task-groups">
-        <TaskList class="task-list-container" status="TODO" :tasks="todos" :is-loading="isLoading" />
-        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="inProgress" :is-loading="isLoading" />
-        <TaskList class="task-list-container" status="COMPLETED" :tasks="completed" :is-loading="isLoading" />
+        <TaskList class="task-list-container" status="TODO" :tasks="taskStore.todos" :is-loading="taskStore.isLoading" />
+        <TaskList class="task-list-container" status="IN PROGRESS" :tasks="taskStore.inProgress" :is-loading="taskStore.isLoading" />
+        <TaskList class="task-list-container" status="COMPLETED" :tasks="taskStore.completed" :is-loading="taskStore.isLoading" />
     </div>
 </template>
 
