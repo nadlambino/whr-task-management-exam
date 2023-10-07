@@ -19,6 +19,8 @@ class TaskController extends Controller
     {
         $search = $request->get('search');
         $status = $request->get('status');
+        $sort = $request->get('sort');
+        $sortDir = $request->get('sort_dir');
         $isTrashed = (int) $request->get('is_trashed', 0);
         $tasks = Auth::user()
             ->tasks()
@@ -36,6 +38,9 @@ class TaskController extends Controller
                     $query->where('title', 'LIKE', "%$search%")
                         ->orWhere('description', 'LIKE', "%$search%");
                 });
+            })
+            ->when(!is_null($sort) && !is_null($sortDir), function ($query) use ($sort, $sortDir) {
+                $query->orderBy($sort, $sortDir);
             })
             ->get()
             ->toArray();

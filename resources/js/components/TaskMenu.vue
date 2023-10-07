@@ -21,10 +21,34 @@ const taskStore = useTaskStore()
             <v-btn
                 class="button secondary-button text-xs"
                 variant="tonal"
+            >
+                <v-icon icon="mdi-sort" class="mr-2"/>
+                <span v-show="!taskStore.sortText">SORT BY</span>
+                <span v-show="taskStore.sortText" class="uppercase font-bold">{{ taskStore.sortText }}</span>
+                <v-menu activator="parent">
+                    <v-list>
+                        <v-list-item @click="taskStore.handleSortChange('title', 'asc')">
+                            <v-list-item-title>Title (asc)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="taskStore.handleSortChange('title', 'desc')">
+                            <v-list-item-title>Title (desc)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="taskStore.handleSortChange('created_at', 'asc')">
+                            <v-list-item-title>Created Date (asc)</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item @click="taskStore.handleSortChange('created_at', 'desc')">
+                            <v-list-item-title>Created Date (desc)</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-btn>
+            <v-btn
+                class="button secondary-button text-xs"
+                variant="tonal"
                 @click="trashStore.handleIsOpen(true)"
             >
                 <v-icon icon="mdi-delete-variant" class="mr-2"/>
-                TRASH BIN
+                TRASH
             </v-btn>
             <v-btn
                 class="button main-button text-xs"
@@ -33,7 +57,7 @@ const taskStore = useTaskStore()
                 :disabled="formStore.isOpen"
             >
                 <v-icon icon="mdi-plus-box-multiple-outline" class="mr-2"/>
-                NEW TASK
+                NEW
             </v-btn>
         </div>
     </div>
@@ -51,7 +75,8 @@ const taskStore = useTaskStore()
     }
 
     .button-container {
-        @apply order-1 md:order-2 flex justify-end gap-2;
+        @apply order-1 gap-2 justify-between;
+        @apply md:order-2 flex md:justify-end;
     }
 }
 </style>
