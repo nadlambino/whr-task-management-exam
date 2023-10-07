@@ -32,9 +32,7 @@ export const useFormStore = defineStore('formStore', () => {
 
     const {
         mutate: createNewTask,
-        isSuccess: isTaskCreated,
         isLoading: isTaskCreating,
-        isError: isCreateError
     } = useMutation({
         mutationFn: async () => {
             return await window.axios.post('/api/tasks', {
@@ -60,9 +58,7 @@ export const useFormStore = defineStore('formStore', () => {
 
     const {
         mutate: updateTask,
-        isSuccess: isTaskUpdated,
         isLoading: isTaskUpdating,
-        isError: isUpdateError
     } = useMutation({
         mutationFn: async () => {
             return await window.axios.put(`/api/tasks/${id.value}`, {
@@ -88,9 +84,7 @@ export const useFormStore = defineStore('formStore', () => {
 
     const {
         mutate: deleteTask,
-        isSuccess: isTaskDeleted,
         isLoading: isTaskDeleting,
-        isError: isDeleteError
     } = useMutation({
         mutationFn: async () => {
             return await window.axios.delete(`/api/tasks/${id.value}`).then(() => {
@@ -111,7 +105,7 @@ export const useFormStore = defineStore('formStore', () => {
         }
     })
 
-    const isFormSubmitting = computed(() => isTaskCreating.value || isTaskUpdating.value)
+    const isFormSubmitting = computed(() => isTaskCreating.value || isTaskUpdating.value || isTaskDeleting.value)
 
     function handleFormSubmit() {
         if (formType.value === 'create') {
