@@ -46,7 +46,7 @@ const { status, tasks, isLoading } = toRefs(props);
     }
 
     .tasks-container {
-        @apply p-3 flex flex-col gap-5;
+        @apply p-3 pb-5 flex flex-col gap-5 overflow-y-auto;
 
         .empty-list {
             @apply border border-dashed border-slate-300 rounded-md text-center p-2 text-slate-400;

@@ -17,13 +17,14 @@ const taskStore = useTaskStore();
 @import "./../../css/app.css";
 
 .task-groups {
-    @apply flex flex-col justify-between w-full mt-5;
-    @apply md:flex-row md:h-[calc(100vh-150px)];
+    @apply flex flex-col justify-between w-full mt-5 gap-6;
+    @apply md:flex-row md:h-[calc(100vh-150px)] md:gap-0;
 }
 
 .task-list-container {
     &:nth-child(even) {
-        @apply md:border-r md:border-l border-slate-300 border-dashed
+        @apply border-t border-b py-5;
+        @apply md:py-0 md:border-t-0 md:border-b-0 md:border-r md:border-l border-slate-300 border-dashed
     }
 }
 </style>
