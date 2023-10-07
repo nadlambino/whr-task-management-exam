@@ -75,8 +75,12 @@ const taskStore = useTaskStore()
     }
 
     .button-container {
-        @apply order-1 gap-2 justify-between;
+        @apply order-1 gap-2 justify-between overflow-x-auto;
         @apply md:order-2 flex md:justify-end;
+
+        ::-webkit-scrollbar-thumb {
+            @apply hidden w-0;
+        }
     }
 }
 </style>
