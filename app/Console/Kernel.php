@@ -17,7 +17,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command('tasks:delete')->daily();
+        $runEvery = config('app.run_delete_every', 'daily');
+
+        if ($runEvery === 'daily') {
+            $schedule->command('tasks:delete')->daily();
+        } else {
+            $schedule->command('tasks:delete')->everyMinute();
+        }
     }
 
     /**

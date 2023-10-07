@@ -27,11 +27,11 @@ class DeleteTrashedTasks extends Command
      */
     public function handle(Task $task)
     {
-        $thirtyDaysAgo = Carbon::now()->subDays(30);
+        $daysAgo = Carbon::now()->subDays((int) config('app.delete_trash_old', 30));
 
         $task->query()
             ->whereNotNull('trashed_at')
-            ->where('trashed_at', '<=', $thirtyDaysAgo)
+            ->where('trashed_at', '<=', $daysAgo)
             ->delete();
     }
 }

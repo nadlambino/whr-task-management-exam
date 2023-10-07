@@ -185,4 +185,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'delete_trash_old' => env('DELETE_TRASH_OLD', 30),
+    'run_delete_every' => env('RUN_DELETE_EVERY', 'daily'),
 ];
