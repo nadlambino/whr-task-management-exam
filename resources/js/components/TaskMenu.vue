@@ -13,13 +13,6 @@ const trashStore = useTrashStore()
     <TrashedTaskModal />
     <div class="task-menu">
         <v-btn
-            class="button danger-button text-xs"
-            variant="tonal"
-        >
-            <v-icon icon="mdi-delete-outline" class="mr-2"/>
-            DELETE
-        </v-btn>
-        <v-btn
             class="button secondary-button text-xs"
             variant="tonal"
             @click="trashStore.handleIsOpen(true)"
