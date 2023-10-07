@@ -13,7 +13,7 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'status', 'is_trashed'];
+    protected $fillable = ['title', 'description', 'status', 'trashed_at'];
 
     protected $casts = [
         'created_at' => 'datetime:M d Y h:i A'

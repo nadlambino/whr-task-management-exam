@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title', 100);
             $table->text('description');
             $table->enum('status', ['todo', 'inprogress', 'completed']);
-            $table->boolean('is_trashed')->default(false);
+            $table->timestamp('trashed_at')->nullable()->default(null);
             $table->softDeletes();
             $table->timestamps();
         });

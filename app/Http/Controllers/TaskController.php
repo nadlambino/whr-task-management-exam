@@ -24,7 +24,12 @@ class TaskController extends Controller
             ->when(!empty($status), function($query) use ($status) {
                 $query->where('status', $status);
             })
-            ->where('is_trashed', $isTrashed)
+            ->when($isTrashed, function($query) {
+                $query->whereNotNull('trashed_at');
+            })
+            ->when(!$isTrashed, function($query) {
+                $query->whereNull('trashed_at');
+            })
             ->get()
             ->toArray();
 
@@ -65,7 +70,7 @@ class TaskController extends Controller
             return $this->errorResponse('Unauthorized', [], 403);
         }
 
-        $task->is_trashed = false;
+        $task->trashed_at = null;
         $task->save();
 
         return $this->successResponse($task->refresh()->toArray());
@@ -80,7 +85,7 @@ class TaskController extends Controller
             return $this->errorResponse('Unauthorized', [], 403);
         }
 
-        $task->is_trashed = true;
+        $task->trashed_at = now();
         $task->save();
 
         return $this->successResponse($task->refresh()->toArray());
