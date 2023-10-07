@@ -41,7 +41,7 @@ function computeDayDifference(trashedDate) {
         <v-card>
             <v-card-title>
                 <span class="text-h5 text-capitalize">
-                    Trash Bin
+                    Trash
                 </span>
             </v-card-title>
                 <v-card-text>
