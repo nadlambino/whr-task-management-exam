@@ -23,6 +23,15 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
     }
 })
 
+const { mutate: deleterPermanent, isLoading: isDeleting } = useMutation({
+    mutationFn: async (id) => {
+        await window.axios.delete(`/api/tasks/permanent/${id}`).then(() => {
+            queryClient.invalidateQueries({ queryKey: ['tasks'] })
+            queryClient.invalidateQueries({ queryKey: ['trashed'] })
+        })
+    }
+})
+
 function computeDayDifference(trashedDate) {
     const today = moment()
     const trashed = moment(trashedDate)
@@ -76,19 +85,28 @@ function computeDayDifference(trashedDate) {
                                 v-for="task in tasks"
                                 :key="task.id"
                             >
-                                <td>{{ task.title }}</td>
-                                <td>{{ task.status }}</td>
-                                <td>{{ task.trashed_at }}</td>
-                                <td>{{ computeDayDifference(task.trashed_at) }}</td>
-                                <td>
+                                <td class="py-2">{{ task.title }}</td>
+                                <td class="py-2">{{ task.status }}</td>
+                                <td class="py-2">{{ task.trashed_at }}</td>
+                                <td class="py-2">{{ computeDayDifference(task.trashed_at) }}</td>
+                                <td class="flex gap-1 py-2">
                                     <v-btn
                                         variant="tonal"
                                         class="button main-button"
                                         @click="restoreTrashed(task.id)"
-                                        :disabled="isRestoring || isLoading"
+                                        :disabled="isRestoring || isLoading || isDeleting"
                                     >
                                         <v-icon icon="mdi-restore mr-2" />
                                         Restore
+                                    </v-btn>
+                                    <v-btn
+                                        variant="tonal"
+                                        class="button danger-button"
+                                        @click="deleterPermanent(task.id)"
+                                        :disabled="isRestoring || isLoading || isDeleting"
+                                    >
+                                        <v-icon icon="mdi-delete-alert-outline mr-2" />
+                                        Delete
                                     </v-btn>
                                 </td>
                             </tr>

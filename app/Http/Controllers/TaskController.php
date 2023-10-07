@@ -102,4 +102,15 @@ class TaskController extends Controller
 
         return $this->successResponse($task->refresh()->toArray());
     }
+
+    public function delete(Task $task)
+    {
+        if (Auth::id() !== $task?->user_id) {
+            return $this->errorResponse('Unauthorized', [], 403);
+        }
+
+        $task->delete();
+
+        return $this->successResponse($task->refresh()->toArray());
+    }
 }

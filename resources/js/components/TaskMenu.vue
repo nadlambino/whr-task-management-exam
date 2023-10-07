@@ -24,7 +24,7 @@ const taskStore = useTaskStore()
             >
                 <v-icon icon="mdi-sort" class="mr-2"/>
                 <span v-show="!taskStore.sortText">SORT BY</span>
-                <span v-show="taskStore.sortText" class="uppercase font-bold">{{ taskStore.sortText }}</span>
+                <span v-show="taskStore.sortText" class="uppercase">{{ taskStore.sortText }}</span>
                 <v-menu activator="parent">
                     <v-list>
                         <v-list-item @click="taskStore.handleSortChange('title', 'asc')">
