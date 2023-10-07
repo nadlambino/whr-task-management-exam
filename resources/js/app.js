@@ -14,6 +14,7 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import { createPinia } from 'pinia'
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import '@mdi/font/css/materialdesignicons.css'
+import 'vue3-toastify/dist/index.css';
 
 const vuetify = createVuetify({
     components,

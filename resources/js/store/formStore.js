@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {computed, ref} from 'vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { toast } from 'vue3-toastify';
 
 export const useFormStore = defineStore('formStore', () => {
     const isOpen = ref(false)
@@ -43,7 +44,17 @@ export const useFormStore = defineStore('formStore', () => {
             }).then(() => {
                 handleFormState(false);
                 queryClient.invalidateQueries({ queryKey: ['tasks'] })
+                toast("Successfully Created", {
+                    autoClose: 1000,
+                    type: 'success'
+                });
             })
+        },
+        onError: () => {
+            toast("Create Failed", {
+                autoClose: 1000,
+                type: 'error'
+            });
         }
     })
 
@@ -61,7 +72,17 @@ export const useFormStore = defineStore('formStore', () => {
             }).then(() => {
                 handleFormState(false);
                 queryClient.invalidateQueries({ queryKey: ['tasks'] })
+                toast("Successfully Updated", {
+                    autoClose: 1000,
+                    type: 'success'
+                });
             })
+        },
+        onError: () => {
+            toast("Update Failed", {
+                autoClose: 1000,
+                type: 'error'
+            });
         }
     })
 
@@ -76,7 +97,17 @@ export const useFormStore = defineStore('formStore', () => {
                 handleFormState(false);
                 queryClient.invalidateQueries({ queryKey: ['tasks'] })
                 queryClient.invalidateQueries({ queryKey: ['trashed'] })
+                toast("Successfully Deleted", {
+                    autoClose: 1000,
+                    type: 'success'
+                });
             })
+        },
+        onError: () => {
+            toast("Delete Failed", {
+                autoClose: 1000,
+                type: 'error'
+            });
         }
     })
 

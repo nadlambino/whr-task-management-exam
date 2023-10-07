@@ -3,6 +3,7 @@ import {useTrashStore} from "../store/trashStore.js";
 import {useMutation, useQuery, useQueryClient} from '@tanstack/vue-query';
 import {computed} from "vue";
 import moment from 'moment'
+import {toast} from "vue3-toastify";
 
 const trashStore = useTrashStore()
 const queryClient = useQueryClient()
@@ -19,7 +20,17 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
         await window.axios.put(`/api/tasks/restore/${id}`).then(() => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] })
             queryClient.invalidateQueries({ queryKey: ['trashed'] })
+            toast("Successfully Restored", {
+                autoClose: 1000,
+                type: 'success'
+            });
         })
+    },
+    onError: () => {
+        toast("Restore Failed", {
+            autoClose: 1000,
+            type: 'error'
+        });
     }
 })
 
@@ -28,7 +39,17 @@ const { mutate: deleterPermanent, isLoading: isDeleting } = useMutation({
         await window.axios.delete(`/api/tasks/permanent/${id}`).then(() => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] })
             queryClient.invalidateQueries({ queryKey: ['trashed'] })
+            toast("Successfully Deleted", {
+                autoClose: 1000,
+                type: 'success'
+            });
         })
+    },
+    onError: () => {
+        toast("Delete Failed", {
+            autoClose: 1000,
+            type: 'error'
+        });
     }
 })
 
