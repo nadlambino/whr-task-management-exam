@@ -27,7 +27,7 @@ class Task extends Model
     public function createdAt(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value, 'UTC')
+            get: fn (?string $value) => is_null($value) ? null : Carbon::parse($value, 'UTC')
                 ->setTimezone('Asia/Singapore')
                 ->format('M d Y h:i A'),
         );
@@ -36,7 +36,16 @@ class Task extends Model
     public function updatedAt(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => Carbon::parse($value, 'UTC')
+            get: fn (?string $value) => is_null($value) ? null : Carbon::parse($value, 'UTC')
+                ->setTimezone('Asia/Singapore')
+                ->format('M d Y h:i A'),
+        );
+    }
+
+    public function trashedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => is_null($value) ? null : Carbon::parse($value, 'UTC')
                 ->setTimezone('Asia/Singapore')
                 ->format('M d Y h:i A'),
         );

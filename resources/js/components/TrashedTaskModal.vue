@@ -47,16 +47,19 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
                                     Status
                                 </th>
                                 <th class="text-center">
+                                    Trashed At
+                                </th>
+                                <th class="text-center">
                                     Action
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-if="isLoading">
-                                <td colspan="3">Retrieving trashed tasks</td>
+                                <td colspan="4">Retrieving trashed tasks</td>
                             </tr>
                             <tr v-else-if="!isLoading && tasks.length === 0">
-                                <td colspan="3">Trash bin is empty</td>
+                                <td colspan="4">Trash bin is empty</td>
                             </tr>
                             <tr
                                 v-for="task in tasks"
@@ -64,6 +67,7 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
                             >
                                 <td>{{ task.title }}</td>
                                 <td>{{ task.status }}</td>
+                                <td>{{ task.trashed_at }}</td>
                                 <td>
                                     <v-btn
                                         variant="tonal"
