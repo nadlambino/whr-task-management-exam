@@ -76,10 +76,10 @@ function computeDayDifference(trashedDate) {
                         </thead>
                         <tbody>
                             <tr v-if="isLoading">
-                                <td colspan="4">Retrieving trashed tasks</td>
+                                <td colspan="5">Retrieving trashed tasks</td>
                             </tr>
                             <tr v-else-if="!isLoading && tasks.length === 0">
-                                <td colspan="4">Trash bin is empty</td>
+                                <td colspan="5">Trash bin is empty</td>
                             </tr>
                             <tr
                                 v-for="task in tasks"

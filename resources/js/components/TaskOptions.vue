@@ -46,7 +46,7 @@ function handleDelete() {
         </div>
         <ul>
             <li><button @click="formStore.handleFormState(true, 'update', task)">Edit</button></li>
-            <li><button @click="handleDelete">Delete</button></li>
+            <li><button @click="handleDelete">Trash</button></li>
         </ul>
     </div>
 </template>
