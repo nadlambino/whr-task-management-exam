@@ -2,6 +2,7 @@
 import {useTrashStore} from "../store/trashStore.js";
 import {useMutation, useQuery, useQueryClient} from '@tanstack/vue-query';
 import {computed} from "vue";
+import moment from 'moment'
 
 const trashStore = useTrashStore()
 const queryClient = useQueryClient()
@@ -21,6 +22,13 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
         })
     }
 })
+
+function computeDayDifference(trashedDate) {
+    const today = moment()
+    const trashed = moment(trashedDate)
+
+    return today.diff(trashed, 'days')
+}
 </script>
 
 <template>
@@ -50,6 +58,9 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
                                     Trashed At
                                 </th>
                                 <th class="text-center">
+                                    Days In Trash
+                                </th>
+                                <th class="text-center">
                                     Action
                                 </th>
                             </tr>
@@ -68,6 +79,7 @@ const { mutate: restoreTrashed, isLoading: isRestoring } = useMutation({
                                 <td>{{ task.title }}</td>
                                 <td>{{ task.status }}</td>
                                 <td>{{ task.trashed_at }}</td>
+                                <td>{{ computeDayDifference(task.trashed_at) }}</td>
                                 <td>
                                     <v-btn
                                         variant="tonal"
